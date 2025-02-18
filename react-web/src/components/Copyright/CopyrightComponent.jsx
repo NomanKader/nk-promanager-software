@@ -4,7 +4,7 @@ const CopyrightComponent=()=>{
         <Typography variant="body2" color="text.secondary" align="center" >
           {'Copyright © '}
           <Link color="inherit" href="https://search.com.mm">
-            Sharmal RealEstate|Car-RentBuySell
+            NK-POS System
           </Link>{' '}
           {new Date().getFullYear()}
           {'.'}

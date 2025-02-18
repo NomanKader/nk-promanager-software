@@ -6,6 +6,7 @@ import "./index.css";
 import HomePage from "./pages/common/HomePage";
 import Footer from './components/Footer/Footer'
 import NotFoundPage from './pages/common/NotFoundPage';
+import LoginPage from "./pages/admin/auth/LoginPage";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -32,6 +33,7 @@ export default function App() {
         <Layout>
           <Switch>
             <Route exact path="/" component={HomePage} />                     
+            <Route exact path="/admin/login" component={LoginPage} />                     
             <Route component={NotFoundPage} />
           </Switch>
         </Layout>
