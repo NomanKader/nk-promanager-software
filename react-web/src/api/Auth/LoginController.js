@@ -5,15 +5,19 @@ const isProduction = process.env.REACT_APP_IS_PRODUCTION === "true";
 const API_BASE_URL = isProduction
   ? process.env.REACT_APP_API_ENDPOINT
   : process.env.REACT_APP_UAT_API_ENDPOINT;
+  
 
 const LoginAPI = async (postBody) => {
-  const endpoint = `${API_BASE_URL}/login`;
+  const endpoint = `${API_BASE_URL}/account/user-login`;
+   console.log(endpoint)
   try {
     const res = await axios.post(endpoint, postBody, 
       {
         headers: {
           'Content-Type': 'application/json', 
-        }
+        
+        },
+        withCredentials : true,
       });
 
     if (res.data.baseResponseModel.respCode === 200) {      
@@ -36,6 +40,7 @@ const LoginAPI = async (postBody) => {
 
     }
   } catch (err) {
+     
     console.error("Login error:", err);
 
   
