@@ -30,8 +30,7 @@ import UserEditDialogComponent from '../Dialog/user/UserEditDialogComponent';
 import DeleteDialogComponent from '../Dialog/DeleteDialogComponent';
 import PromoCodeDialog from "../Dialog/promoCode/PromoCodeDialog";
 import OrderStatus from "../../pages/common/OrderStatus";
-import ProductEditDialogForm from "../Dialog/product/edit/ProductEditDialogForm";
-
+ 
 const DataTableComponent = ({
   data,
   showIdColumns,
@@ -52,43 +51,43 @@ const DataTableComponent = ({
   const [selectedRow, setSelectedRow] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialogStatus, setDialogStatus] = useState("create");
-
+ 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
-
+ 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-
+ 
   const handleMoreClick = (event, row) => {
     setAnchorEl(event.target);
     setSelectedRow(row);
   };
-
+ 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+ 
   const handleViewDetailsClick = () => {
     setOpenDetailDialog(true);
     handleClose();
   };
-
+ 
   const handleDialogClose = () => {
     setOpenDetailDialog(false);
     setSelectedRow(null);
   };
-
+ 
   const tableData = data.map((item) => ({
     ...item,
     Images: item.dataLst
       ? item.dataLst.map((img) => img.image).join(", ")
       : "No Image",
   }));
-
+ 
   const filteredData = tableData.filter((row) =>
     tableHeaders.some(
       (header) =>
@@ -96,32 +95,31 @@ const DataTableComponent = ({
         row[header].toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
-
+ 
   const sortedData = stableSort(filteredData, getComparator(order, orderBy));
-
+ 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-
+ 
   const handleOpenCreateAdsDialog = () => {
     setDialogOpen(true);
     setDialogStatus("create");
   };
-
-  const handleCloseCreateDialog = () => {
+ 
+  const handleCloseCreateAdsDialog = () => {
     setDialogOpen(false);
-    setDialogStatus('create');
   };
-
+ 
   const handleOpenEditDialog = () => {
     setEditDialogOpen(true);
     setDialogStatus("edit");
   };
-
+ 
   const handleCloseEditDialog = () => {
     setEditDialogOpen(false);
     setDialogStatus("edit");
   };
-
+ 
   return (
     <>
       <TableContainer component={Paper}>
@@ -219,7 +217,7 @@ const DataTableComponent = ({
                 <TableRow key={row.productId}>
                   {tableHeaders.map((header) => {
                     const cellContent = row[header];
-
+ 
                     return (
                       <TableCell
                         key={header}
@@ -286,31 +284,32 @@ const DataTableComponent = ({
             <MenuItem onClick={handleViewDetailsClick}>View Details</MenuItem>
           )}
           <MenuItem onClick={handleOpenEditDialog}>Edit</MenuItem>
-          <MenuItem onClick={handleOpenDeleteDialog}>
+          <MenuItem onClick={() => [handleOpenDeleteDialog(selectedRow),setAnchorEl(null)]}>
             Delete
           </MenuItem>
         </Menu>
       </TableContainer>
       {requested === "Product" ? (
         <ProductDialog
-          open={dialogStatus=='create'?dialogOpen : editDialogOpen}
-          onClose={dialogStatus=='create'?handleCloseCreateDialog : handleCloseEditDialog}
-          onRefresh={()=>onRefresh()}
+          open={dialogStatus === "create" ? dialogOpen : editDialogOpen}  
+          onClose={dialogStatus==="create"?handleCloseCreateAdsDialog:handleCloseEditDialog}
+          onRefresh={onRefresh}
+          dialogStatus={dialogStatus}
+          adsDataForEdit={selectedRow}          
+        />
+      ) : requested === "Account" && dialogStatus === "create" ? (
+        <UserCreateDialogComponent
+          open={dialogOpen}
+          onClose={handleCloseCreateAdsDialog}
+          onRefresh={onRefresh}
           dialogStatus={dialogStatus}
           adsDataForEdit={selectedRow}
-        />
-      ) : requested === "Account" ? (
-        <UserCreateDialogComponent
-          open={dialogStatus=='create'?dialogOpen:editDialogOpen}
-          onClose={dialogStatus=='create'?handleCloseCreateDialog:handleCloseEditDialog}
-          onRefresh={onRefresh}
-          status={dialogStatus}  
-          oldData={selectedRow}        
+          status={dialogStatus}
         />
       ) : requested === "Order" ? (
         <DetailModalComponent
           open={dialogOpen}
-          onClose={handleCloseCreateDialog}
+          onClose={handleCloseCreateAdsDialog}
           data={selectedRow}
           category={requested}
         />
@@ -319,27 +318,25 @@ const DataTableComponent = ({
           open={dialogStatus === "create" ? dialogOpen : editDialogOpen}
           onClose={
             dialogStatus === "create"
-              ? handleCloseCreateDialog
+              ? handleCloseCreateAdsDialog
               : handleCloseEditDialog
           }
           onRefresh={onRefresh}
           selectedRow={dialogStatus === "edit" ? selectedRow : null}
         />
-      ) : 
-     
-      (
-        // <UserEditDialogComponent
-        //   open={editDialogOpen}
-        //   onClose={handleCloseEditDialog}
-        //   onRefresh={()=>onRefresh()}
-        //   dialogStatus={dialogStatus}
-        //   editMode={"profile update"}
-        //   adsDataForEdit={selectedRow}
-        //   rowData={selectedRow}
-        // />
-        <></>
+      ) : (
+        <UserEditDialogComponent
+          open={editDialogOpen}
+          onClose={handleCloseEditDialog}
+          onRefresh={()=>[onRefresh(),setAnchorEl(null)]}
+          dialogStatus={dialogStatus}
+          editMode={"profile update"}
+          adsDataForEdit={selectedRow}
+          rowData={selectedRow}
+          setopenUserEditCreateDialog={setEditDialogOpen}
+        />
       )}
-
+ 
       {/* Custom Backdrop */}
       <Modal
         open={openDetailDialog}
@@ -361,5 +358,5 @@ const DataTableComponent = ({
     </>
   );
 };
-
+ 
 export default DataTableComponent;
