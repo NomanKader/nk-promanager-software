@@ -19,6 +19,7 @@ import BackdropComponent from "../../../components/Loading/BackDropComponent";
 import LoginAPI from "../../../api/Auth/LoginController";
 import logo from '../../../assets/images/logo.jpg';
 import { _EncryptService } from "../../../service/EncryptDecryptService";
+import {toast} from 'react-toastify';
 
 export default function LoginPage({ history }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,11 +35,11 @@ export default function LoginPage({ history }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const postBody = { Email: email, Password: _EncryptService(password) };
+    const postBody = { email: email, password: _EncryptService(password) };
 
     setLoading(true);
     try {
-      await LoginAPI(postBody);
+      await LoginAPI(postBody,toast);
     } catch (error) {
     } finally {
       setLoading(false);
