@@ -81,10 +81,10 @@ const DataTableComponent = ({
     setSelectedRow(null);
   };
  
-  const tableData = data.map((item) => ({
+  const tableData = data?.map((item) => ({
     ...item,
     Images: item.dataLst
-      ? item.dataLst.map((img) => img.image).join(", ")
+      ? item?.dataLst?.map((img) => img.image).join(", ")
       : "No Image",
   }));
  

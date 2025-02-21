@@ -38,7 +38,7 @@ const ProductPage = () => {
         category: "", // empty string if there is no filter value
         priceRange: "", // empty string if there is no filter value
       };
-      await GetProductAPI(postBody, setData, setIsLoading);
+      // await GetProductAPI(postBody, setData, setIsLoading);
     };
     fetchProductList();
   }, []);
@@ -64,7 +64,7 @@ const ProductPage = () => {
     };
 
     // Fetch the ads with the correct payload
-    await GetProductAPI(payload, setData, setIsLoading);
+    // await GetProductAPI(payload, setData, setIsLoading);
   };
 
   const handleCategoryChange = (category) => {
@@ -135,31 +135,34 @@ const ProductPage = () => {
         <div style={{ marginBottom: "20px" }}>
           {/* Other category buttons can be added here if needed */}
         </div>
-        <DataTableComponent
-          data={data}
+        {/* <DataTableComponent
+          data={Array.isArray(data) ? data : []} // Ensure data is always an array
           showIdColumns={showIdColumns}
           handleMoreClick={handleMoreClick}
           anchorEl={anchorEl}
           handleClose={handleClose}
           handleViewDetails={handleViewDetails}
-          tableHeaders={tableHeaders["Product"]}
+          tableHeaders={tableHeaders?.["Product"] || []} // Ensure tableHeaders exists
           isLoading={isLoading}
           setIsFilter={setIsFilterDrawerOpen}
           handleOpenDeleteDialog={handleOpenDeleteDialog}
           requested={"Product"}
-          onRefresh={()=>fetchData(
-            page === page ? page + 1 : page,
-            rowsPerPage,
-            FilterPayload,
-            selectedCategory
-          )}
-        />
+          onRefresh={() =>
+            fetchData(
+              page === page ? page + 1 : page,
+              rowsPerPage,
+              FilterPayload,
+              selectedCategory
+            )
+          }
+        /> */}
+
         <TablePagination
           component="div"
-          count={totalCount}
-          page={page}
+          count={totalCount || 0}
+          page={page || 0}
           onPageChange={handlePageChange}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={rowsPerPage || 0}
           onRowsPerPageChange={handleRowsPerPageChange}
         />
         <Button

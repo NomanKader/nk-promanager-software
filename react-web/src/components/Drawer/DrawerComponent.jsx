@@ -17,21 +17,20 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { ThemeProvider } from "@emotion/react";
 import theme from "../../theme";
-import Logo from "../../assets/icons/logo.png";
-import DashboardIcon from "../../assets/icons/DashboardIcon.png";
-import LogoutIcon from "../../assets/icons/LogoutIcon.png";
-import ProductIcon from "../../assets/icons/ListingIcon.png";
-import OrderIcon from "../../assets/icons/order.png";
+import Logo from "../../assets/images/logo.jpg";
+import DashboardIcon from "../../assets/icons/dashboardIcon.png";
+import LogoutIcon from "../../assets/icons/logoutIcon.png";
+import ProductIcon from "../../assets/icons/listingIcon.png";
+import OrderIcon from "../../assets/icons/orderIcon.png";
 import AccountIcon from "../../assets/icons/accountIcon.png";
-import PromoCodeIcon from "../../assets/icons/promoCode.png";
+// import PromoCodeIcon from "../../assets/icons/promoCode.png";
 import DashboardPage from "../../pages/admin/dashboard/DashboardPage";
+import AccountManagementPage from '../../pages/admin/account/AccountManagePage'
 import ProductPage from "../../pages/admin/product/ProductPage";
-import AccountManagementPage from "../../pages/admin/account/AccountManagementPage";
+import SalePage from "../../pages/admin/sale/SalePage";
 import _LogoutService from "../../service/LogoutService";
 import { _AdminAuthorizeService } from "../../service/AuthorizeService";
 import "./DrawerStyle.css";
-import OrderStatus from "../../pages/common/OrderStatus";
-import PromoCodePage from "../../pages/admin/promo/PromoCodePage";
 const drawerWidth = 240;
 
 const DrawerComponent = (props) => {
@@ -51,19 +50,18 @@ const DrawerComponent = (props) => {
   const imageMapping = {
     Dashboard: DashboardIcon,
     Product: ProductIcon,
-    Account: AccountIcon,
-    PromoCode: PromoCodeIcon,
-    Order: OrderIcon,
+    Account: AccountIcon,    
+    Sale: OrderIcon,
     Logout: LogoutIcon,
   };
 
-  const menuItems = ["Dashboard", "Product"];
+  const menuItems = [];
   if (userRole === "Admin") {
+    menuItems.push("Dashboard");
     menuItems.push("Account");
+    menuItems.push("Product");
+    menuItems.push("Sale");
   }
-  menuItems.push("Order");
-  menuItems.push("PromoCode");
-
   const handleMenuClick = (item, index) => {
     setSelectedItem(item);
     setSelectedIndex(index);
@@ -83,7 +81,7 @@ const DrawerComponent = (props) => {
             sx={{
               background:
                 selectedItem === text
-                  ? "linear-gradient(93deg, #F98C6B -18.36%, #e97a58 183.89%)"
+                  ? "linear-gradient(93deg, #2981b8 -18.36%, #2db9dd 183.89%)"
                   : "transparent",
               color: selectedItem === text ? "white" : "inherit",
             }}
@@ -124,16 +122,14 @@ const DrawerComponent = (props) => {
     const pageMapping = {
       Admin: {
         0: <DashboardPage />,
-        1: <ProductPage />,
-        2: <AccountManagementPage />,
-        3: <OrderStatus />,
-        4: <PromoCodePage />,
+        1: <AccountManagementPage />,
+        2: <ProductPage />,
+        3: <SalePage />      
       },
       User: {
         0: <DashboardPage />,
-        1: <ProductPage />,
-        2: <OrderStatus />,
-        4: <PromoCodePage />,
+        1: <ProductPage />        
+        
       },
     };
     const userPages = pageMapping[userRole] || {};
