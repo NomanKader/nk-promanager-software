@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import '@fontsource/rubik/400.css';
+import '@fontsource/rubik/700.css'; // For bold titles
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

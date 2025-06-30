@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import HomePage from "./pages/common/HomePage";
-import Footer from './components/Footer/Footer'
-import NotFoundPage from './pages/common/NotFoundPage';
+import Footer from "./components/Footer/Footer";
+import NotFoundPage from "./pages/common/NotFoundPage";
 import LoginPage from "./pages/admin/auth/LoginPage";
-import DrawerComponent from './components/Drawer/DrawerComponent';
+import DrawerComponent from "./components/Drawer/DrawerComponent";
+import { ThemeProvider } from "@emotion/react";
+import theme from "./theme";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -29,17 +36,19 @@ const Layout = ({ children }) => {
 };
 
 export default function App() {
-  return (    
+  return (
+    <ThemeProvider theme={theme}>
       <Router>
         <Layout>
           <Switch>
-            <Route exact path="/" component={HomePage} />                     
+            <Route exact path="/" component={HomePage} />
             <Route exact path="/admin/login" component={LoginPage} />
             <Route exact path="/admin/manage" component={DrawerComponent} />
             <Route component={NotFoundPage} />
           </Switch>
         </Layout>
         <ToastContainer />
-      </Router>      
+      </Router>
+    </ThemeProvider>
   );
 }

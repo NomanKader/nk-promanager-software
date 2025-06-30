@@ -2,12 +2,12 @@ import { createTheme } from "@mui/material";
 const theme = createTheme({
     palette: {      
       primary: {
-        main: '#2981b8',
+        main: '#1e3c72',        
         text: "#FA977A",
         contrastText: "#fff"        
       },
       secondary:{
-        main:'#2db9dd',
+        main:'#1976d2',
         backgroundColor: "#ffffff"
       },
       Card: {
@@ -50,6 +50,7 @@ const theme = createTheme({
     },
 
     typography:{ 
+      fontFamily: "'Rubik', sans-serif",
       "h4":{        
         fontWeight:'bold'
       } ,  

@@ -17,9 +17,10 @@ import CopyrightComponent from "../../../components/Copyright/CopyrightComponent
 import theme from "../../../theme";
 import BackdropComponent from "../../../components/Loading/BackDropComponent";
 import LoginAPI from "../../../api/Auth/LoginController";
-import logo from '../../../assets/images/logo.jpg';
+import logo from "../../../assets/icons/logo.png";
 import { _EncryptService } from "../../../service/EncryptDecryptService";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
+import Footer from "../../../components/Footer/Footer";
 
 export default function LoginPage({ history }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +40,7 @@ export default function LoginPage({ history }) {
 
     setLoading(true);
     try {
-      await LoginAPI(postBody,toast);
+      await LoginAPI(postBody, toast);
     } catch (error) {
     } finally {
       setLoading(false);
@@ -48,126 +49,130 @@ export default function LoginPage({ history }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
+      <CssBaseline />
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#f5f5f5",
+          px: 2,
+        }}
+      >
+        <Paper
+          elevation={6}
           sx={{
-            backgroundImage: `url(${logo})`,
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            p: 4,
+            width: "100%",
+            maxWidth: 420,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            borderRadius: 3,
           }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        >
+          {/* Logo instead of lock icon */}
           <Box
+            component="img"
+            src={logo}
+            alt="Logo"
             sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              width: 80,
+              height: 80,
+              mb: 2,
             }}
+          />
+
+          <Typography component="h1" variant="h5" mt={1}>
+            Welcome Back
+          </Typography>
+          <Typography variant="body2" color="text.secondary" mb={2}>
+            Sign in to ProManager Software
+          </Typography>
+
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ width: "100%" }}
           >
-            <Lock sx={{ fontSize: 50, color: theme.palette.primary.main }} />
-            <Typography component="h1" variant="h5" mt={2}>
-              Welcome Back
-            </Typography>
-            <Typography>
-              Sign in to admin dashboard
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 2,
+                mb: 2,
+                height: 40,
+                textTransform: "capitalize",
+                fontWeight: 600,
+              }}
+              disabled={!email || !password}
+              onClick={()=>history.push("/admin/manage")}
             >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{
-                  backgroundColor: theme.palette.primary.main,
-                  color: 'white',
-                  height: '35px',
-                  borderRadius: '5px',
-                  fontSize: '16px',
-                  paddingX: '35px',
-                  textTransform: 'capitalize',
-                  marginTop: '20px',
-                  fontFamily: "'Amiko', 'Segoe UI', 'Oxygen', 'Ubuntu', sans-serif",
-                  width: '100%',
-                  fontWeight: '400',
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.main,
-                  },
-                }}
-                disabled={!email || !password} // Disable if email or password is empty
-              >
-                Sign In
-              </Button>
-              <Box sx={{ mt: 5 }}>
-                <Typography textAlign="center" variant="body2">
-                  Privacy Policy | Cookie Policy | Terms of Use
-                </Typography>
-              </Box>
-              <Box sx={{ mt: 1 }}>
-                <CopyrightComponent />
-              </Box>
+              Sign In
+            </Button>
+
+            <Typography
+              textAlign="center"
+              variant="body2"
+              color="text.secondary"
+              mt={2}
+            >
+              Privacy Policy | Cookie Policy | Terms of Use
+            </Typography>
+            <Box mt={1}>
+              <CopyrightComponent />
             </Box>
           </Box>
-        </Grid>
-      </Grid>
+        </Paper>
+      </Box>
+
       <BackdropComponent open={loading} />
+      <Footer/>
     </ThemeProvider>
   );
 }

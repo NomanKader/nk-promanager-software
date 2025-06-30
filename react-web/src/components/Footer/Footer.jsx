@@ -1,19 +1,20 @@
 import { Typography, Box } from "@mui/material";
+import theme from "../../theme";
 
 export default function Footer() {
   return (
     <Box 
-      sx={{ 
+      sx={{         
         position: "fixed", 
         bottom: 0, 
         width: "100%", 
-        backgroundColor: "#1976d2", 
+        backgroundColor: theme.palette.primary.main, 
         color: "white", 
         textAlign: "center", 
         p: 2 
       }}
     >
-      <Typography variant="body1">&copy; {new Date().getFullYear()} NK-POS. All Rights Reserved.</Typography>
+      <Typography variant="body1">&copy; {new Date().getFullYear()} NK PM Software. All Rights Reserved.</Typography>
     </Box>
   );
 }
