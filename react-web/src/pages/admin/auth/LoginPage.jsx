@@ -21,6 +21,7 @@ import logo from "../../../assets/icons/logo.png";
 import { _EncryptService } from "../../../service/EncryptDecryptService";
 import { toast } from "react-toastify";
 import Footer from "../../../components/Footer/Footer";
+import bgImage from "../../../assets/images/bgImage.png";
 
 export default function LoginPage({ history }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,15 +52,20 @@ export default function LoginPage({ history }) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box
-        sx={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#f5f5f5",
-          px: 2,
-        }}
-      >
+  sx={{
+    height: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    px: 2,
+    backdropFilter: "blur(4px)",
+    backgroundColor: "rgba(0, 0, 0, 0.3)", // optional overlay
+  }}
+>
         <Paper
           elevation={6}
           sx={{
