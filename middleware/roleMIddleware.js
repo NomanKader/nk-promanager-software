@@ -1,10 +1,13 @@
-const allowRoles = (...roles) => {
+const { errorResponse } = require("../utils/responseFormatter");
+
+const allowLevels = (...allowedLevels) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ error: "Access denied" });
+    const userLevel = req.user?.LevelId;
+    if (!allowedLevels.includes(userLevel)) {
+      return res.json(errorResponse("Access denied", 403));
     }
     next();
   };
 };
 
-module.exports = allowRoles;
+module.exports = allowLevels;

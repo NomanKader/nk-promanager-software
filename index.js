@@ -23,6 +23,9 @@ app.use('/auth', authRoutes);
 const levelRoutes = require('./routes/level');
 app.use('/levels', levelRoutes);
 
+const projectRoutes = require('./routes/project');
+app.use('/projects', projectRoutes);
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
