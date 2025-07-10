@@ -17,6 +17,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
     "mssql": "^11.0.1",
-    "my-api": "file:"
+    "my-api": "file:",
+    "uuid": "^11.1.0"
   }
 }

@@ -1,9 +1,20 @@
 const projectModel = require("../models/projectModal");
-const { successResponse, errorResponse, messageOnlyResponse } = require("../utils/responseFormatter");
+const {
+  successResponse,
+  errorResponse,
+  messageOnlyResponse,
+} = require("../utils/responseFormatter");
 
 exports.getAllProjects = async (req, res) => {
   try {
-    const projects = await projectModel.getAllProjects();
+    const { BusinessName } = req.body;
+
+    if (!BusinessName) {
+      return res.json(errorResponse("BusinessName is required", 400));
+    }
+
+    const projects = await projectModel.getProjectsByBusinessName(BusinessName);
+
     res.json(successResponse({ projectList: projects }));
   } catch (error) {
     console.error("Get all projects error:", error);
@@ -29,7 +40,9 @@ exports.getProjectById = async (req, res) => {
 exports.createProject = async (req, res) => {
   try {
     const newProject = await projectModel.createProject(req.body);
-    res.json(successResponse( messageOnlyResponse(200,"Project created successfully")));
+    res.json(
+      successResponse(messageOnlyResponse(200, "Project created successfully"))
+    );
   } catch (error) {
     console.error("Create project error:", error);
     res.json(errorResponse("Failed to create project", 500));
@@ -46,13 +59,12 @@ exports.updateProject = async (req, res) => {
 
     await projectModel.updateProject(projectId, req.body);
 
-    res.json(messageOnlyResponse(200,"Project updated successfully"));
+    res.json(messageOnlyResponse(200, "Project updated successfully"));
   } catch (error) {
     console.error("Update project error:", error);
     res.json(errorResponse("Failed to update project", 500));
   }
 };
-
 
 exports.deleteProject = async (req, res) => {
   try {
@@ -60,7 +72,7 @@ exports.deleteProject = async (req, res) => {
     if (!projectId) return res.json(errorResponse("Invalid project ID", 400));
 
     await projectModel.deleteProject(projectId);
-    res.json(messageOnlyResponse(200,"Project deleted successfully"));
+    res.json(messageOnlyResponse(200, "Project deleted successfully"));
   } catch (error) {
     console.error("Delete project error:", error);
     res.json(errorResponse("Failed to delete project", 500));

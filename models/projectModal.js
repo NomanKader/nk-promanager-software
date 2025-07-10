@@ -1,8 +1,12 @@
 const { poolConnect, pool, sql } = require("../config/db");
 
-exports.getAllProjects = async () => {
+exports.getProjectsByBusinessName = async (businessName) => {
   await poolConnect;
-  const result = await pool.request().query("SELECT * FROM Projects");
+  const result = await pool
+    .request()
+    .input("BusinessName", businessName)
+    .query("SELECT * FROM Projects WHERE BusinessName = @BusinessName");
+
   return result.recordset;
 };
 
@@ -17,7 +21,13 @@ exports.getProjectById = async (id) => {
 
 exports.createProject = async (data) => {
   await poolConnect;
-  const { ProjectName, ProjectDescription, ProjectStartDate, ProjectDueDate, BusinessName } = data;
+  const {
+    ProjectName,
+    ProjectDescription,
+    ProjectStartDate,
+    ProjectDueDate,
+    BusinessName,
+  } = data;
 
   const result = await pool
     .request()
@@ -25,8 +35,7 @@ exports.createProject = async (data) => {
     .input("ProjectDescription", sql.Text, ProjectDescription)
     .input("ProjectStartDate", sql.Date, ProjectStartDate)
     .input("ProjectDueDate", sql.Date, ProjectDueDate)
-    .input("BusinessName", sql.VarChar(100), BusinessName)
-    .query(`
+    .input("BusinessName", sql.VarChar(100), BusinessName).query(`
       INSERT INTO Projects (
         ProjectName, ProjectDescription, ProjectStartDate, ProjectDueDate, BusinessName
       )
@@ -41,7 +50,13 @@ exports.createProject = async (data) => {
 
 exports.updateProject = async (id, data) => {
   await poolConnect;
-  const { ProjectName, ProjectDescription, ProjectStartDate, ProjectDueDate, BusinessName } = data;
+  const {
+    ProjectName,
+    ProjectDescription,
+    ProjectStartDate,
+    ProjectDueDate,
+    BusinessName,
+  } = data;
 
   await pool
     .request()
@@ -50,8 +65,7 @@ exports.updateProject = async (id, data) => {
     .input("ProjectDescription", sql.Text, ProjectDescription)
     .input("ProjectStartDate", sql.Date, ProjectStartDate)
     .input("ProjectDueDate", sql.Date, ProjectDueDate)
-    .input("BusinessName", sql.VarChar(100), BusinessName)
-    .query(`
+    .input("BusinessName", sql.VarChar(100), BusinessName).query(`
       UPDATE Projects SET
         ProjectName = @ProjectName,
         ProjectDescription = @ProjectDescription,
