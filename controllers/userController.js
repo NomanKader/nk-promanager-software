@@ -45,7 +45,7 @@ exports.createUser = async (req, res) => {
       business_name,
     });
 
-    res.json(messageOnlyResponse("User created successfully", 201));
+    res.json(messageOnlyResponse(201,"User created successfully"));
   } catch (error) {
     console.error("User creation error:", error);
     res.json(errorResponse("User creation failed", 500));
